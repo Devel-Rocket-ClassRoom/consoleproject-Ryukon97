@@ -270,116 +270,177 @@ namespace program
 
         public class Choice2
         {
+        
 
-            public static void Singlegame()
-            {
-                int[,] map = new int[3, 3];
-                int player = 1;
-                int computer = 2;
-                int attempt = 0;
-                Random random = new Random();
-
-                while (true)
+                public static void MapView(int[] map)
                 {
-                    Console.Clear();
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 9; i++)
                     {
-                        Console.Write('\n');
-                        for (int j = 0; j < 3; j++)
+                        if (map[i] == 0)
                         {
-                            
-                            Console.Write(map[i, j] + " ");
+                            Console.Write("■ ");
+                        }
+                        else if (map[i] == 1)
+                        {
+                            Console.Write("◎ ");
+                        }
+                        else if (map[i] == -1)
+                        {
+                            Console.Write("X ");
+                        }
+
+                        if ((i + 1) % 3 == 0)
+                        {
+                            Console.WriteLine();
                         }
                     }
+                }
 
-                    Console.Write("\n당신의 차례 (x(1~3),y(1~3)) : ");
-                    string input = Console.ReadLine();
-                    if (string.IsNullOrEmpty(input) || !input.Contains(","))
-                        continue;
-
-                    string[] usrInput = input.Split(',');
-
-                   
-                    if (!int.TryParse(usrInput[0], out int xRaw) || 
-                        !int.TryParse(usrInput[1], out int yRaw)) 
-                        continue;
-
-                    int x = xRaw - 1;
-                    int y = yRaw - 1;
-
-                    if (x < 0 || x > 2 || y < 0 || y > 2) 
-                        continue;
-
-                    if (map[x, y] == 0)
+               
+                public static bool IsGameOver(int[] map)
+                {
+                    if (map[0] + map[1] + map[2] == 3 || map[0] + map[1] + map[2] == -3)
                     {
-                        map[x, y] = 1;
-                        attempt++;
-
-                        if (GameOver(map, x, y, player))
-                        {
-                            Console.WriteLine("!! Player win !!");
-                            break;
-                        }
-
-                        if (attempt == 5) 
-                        {
-                            Console.WriteLine("!! A win !!");
-                            break;
-                        }
-
-                       
-                        Random rand = new Random();
-                        int cptX, cptY;
-                        do
-                        {
-                            cptX = rand.Next(0, 3);
-                            cptY = rand.Next(0, 3);
-                        } while (map[cptX, cptY] != 0);
-
-                        map[cptX, cptY] = 2;
-                        if (GameOver(map, cptX, cptY, computer))
-                        {
-                            Console.WriteLine("!! Computer win !!");
-                            break;
-                        }
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[3] + map[4] + map[5] == 3 || map[3] + map[4] + map[5] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[6] + map[7] + map[8] == 3 || map[6] + map[7] + map[8] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[0] + map[3] + map[6] == 3 || map[0] + map[3] + map[6] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[1] + map[4] + map[7] == 3 || map[1] + map[4] + map[7] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[2] + map[5] + map[8] == 3 || map[2] + map[5] + map[8] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[0] + map[4] + map[8] == 3 || map[0] + map[4] + map[8] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
+                    }
+                    else if (map[2] + map[4] + map[6] == 3 || map[2] + map[4] + map[6] == -3)
+                    {
+                        MapView(map);
+                        Console.WriteLine("게임이 끝났습니다.");
+                        return true;
                     }
                     else
                     {
-                        Console.WriteLine("이미 차 있는 곳입니다!");
-                        System.Threading.Thread.Sleep(500);
+                        return false;
                     }
                 }
-                Console.WriteLine("\n아무 키나 누르면 메뉴로 돌아갑니다...");
-                Console.ReadKey();
-            }
 
-           
-            static bool GameOver(int[,] map, int x, int y, int turn)
-            {
-                
-                for (int i = 0; i < 3; i++)
+                public static void SingleGame()
                 {
-                    if (map[x, i] != turn) 
-                        break;
-                    if (i == 2) return true;
-                }
-                for (int i = 0; i < 3; i++)
-                {
-                    if (map[i, y] != turn)
-                        break;
-                    if (i == 2) return true;
-                }
-               
-                if (map[0, 0] == turn && map[1, 1] == turn && map[2, 2] == turn) 
-                    return true;
-                if (map[0, 2] == turn && map[1, 1] == turn && map[2, 0] == turn) 
-                    return true;
+                   
+                    int[] map = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-                return false;
+                    Random random = new Random();
+
+                    int computer = 10;
+                    int count;
+                    bool result = false;
+
+
+                    while (true)
+                    {
+                        MapView(map);
+
+                        
+                        Console.WriteLine("표시를 할 위치를 골라주세요 (1~9): ");
+                        int choice = int.Parse(Console.ReadLine());
+
+
+                       
+                        if (choice < 1 || choice > 9)
+                        {
+                            Console.WriteLine("해당되지 않는 숫자입니다. 다시 입력해주세요.");
+                            continue;
+                        }
+                        else if (map[choice - 1] != 0)
+                        {
+                            Console.WriteLine("이미 쓰인 자리입니다. 다시 골라주세요");
+                            continue;
+                        }
+                       
+                        map[choice - 1] = 1;
+
+
+                     
+                        result = IsGameOver(map);
+                        if (result == true)
+                        {
+                            break;
+                        }
+
+
+                       
+                        count = 0;
+                        for (int i = 0; i < map.Length; i++)
+                        {
+                            if (map[i] == 0)
+                            {
+                                count++;
+                            }
+                        }
+
+                     
+                        if (count == 0)
+                        {
+                            Console.WriteLine("비겼습니다!");
+                            break;
+                        }
+
+
+                      
+                        do
+                        {
+                            computer = random.Next(1, 10);
+                        } while (map[computer - 1] != 0);
+                        map[computer - 1] = -1;
+
+                        Console.WriteLine("컴퓨터가 놓은 위치 : {0}", computer);
+
+
+                        
+                        result = IsGameOver(map);
+                        if (result == true)
+                        {
+                            break;
+                        }
+                    }
+                }
             }
         }
+
     }
-}
+
+
+
+
 
 
 
